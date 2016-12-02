@@ -32,9 +32,13 @@ public class UserMealsUtil {
     public static List<UserMealWithExceed>  getFilteredWithExceeded(List<UserMeal> mealList, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
         List<UserMealWithExceed> userMealWithExceeds;
         Map<LocalDate, Integer> caloriesByDays = new HashMap<>();
-        for (UserMeal userMeal: mealList)
-            caloriesByDays.merge(LocalDate.from(userMeal.getDateTime()), userMeal.getCalories(), (oldValue, newValue) -> oldValue + newValue);
-        /* solution with use of .stream().map */
+        mealList
+                .forEach(
+                        userMeal ->
+                                caloriesByDays.merge(
+                                        userMeal.getDateTime().toLocalDate(), userMeal.getCalories(), (oldValue, newValue) -> oldValue + newValue
+                                )
+                );
         userMealWithExceeds = mealList
                 .stream()
                 .filter(
@@ -46,28 +50,11 @@ public class UserMealsUtil {
                                         userMeal.getDateTime(),
                                         userMeal.getDescription(),
                                         userMeal.getCalories(),
-                                        caloriesByDays.getOrDefault(LocalDate.from(userMeal.getDateTime()), 0) > caloriesPerDay
+                                        caloriesByDays.get(userMeal.getDateTime().toLocalDate()) > caloriesPerDay
                                 )
 
                 )
                 .collect(Collectors.toList());
-        /* another solution with use of .stream().forEach */
-        /*
-        mealList
-                .stream()
-                .filter(
-                        userMeal -> TimeUtil.isBetween(LocalTime.from(userMeal.getDateTime()), startTime, endTime)
-                )
-                .forEach(
-                    userMeal -> userMealWithExceeds.add(
-                        new UserMealWithExceed(
-                            userMeal.getDateTime(),
-                            userMeal.getDescription(),
-                            userMeal.getCalories(),
-                            caloriesByDays.getOrDefault(LocalDate.from(userMeal.getDateTime()), 0) > caloriesPerDay
-                        )
-                    )
-                );*/
         return userMealWithExceeds;
     }
 }
