@@ -31,13 +31,13 @@ public class UserMealsUtil {
 
     public static List<UserMealWithExceed>  getFilteredWithExceeded(List<UserMeal> mealList, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
         List<UserMealWithExceed> userMealWithExceeds;
-        Map<LocalDate, Integer> caloriesByDays = new HashMap<>();
-        mealList
-                .forEach(
-                        userMeal ->
-                                caloriesByDays.merge(
-                                        userMeal.getDateTime().toLocalDate(), userMeal.getCalories(), (oldValue, newValue) -> oldValue + newValue
-                                )
+        Map<LocalDate, Integer> caloriesByDays = mealList
+                .stream()
+                .collect(
+                        Collectors.groupingBy(
+                                        userMeal->userMeal.getDateTime().toLocalDate(),
+                                        Collectors.summingInt(UserMeal::getCalories)
+                        )
                 );
         userMealWithExceeds = mealList
                 .stream()
