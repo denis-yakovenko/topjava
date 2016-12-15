@@ -10,10 +10,10 @@
             font-weight: bold;
             background-color: lightgray;
         }
-        tr.exceedTrue{
+        .exceeded{
             background-color: orangered;
         }
-        tr.exceedFalse{
+        .normal{
             background-color: lightgreen;
         }
     </style>
@@ -31,16 +31,8 @@
         <th>delete</th>
     </tr>
     <c:forEach items="${meals}" var="mealItem">
-        <tr
-                <c:choose>
-                    <c:when test="${mealItem.exceed}">
-                        class="exceedTrue"
-                    </c:when>
-                    <c:otherwise>
-                        class="exceedFalse"
-                    </c:otherwise>
-                </c:choose>
-        >
+        <jsp:useBean id="mealItem" scope="page" type="ru.javawebinar.topjava.model.MealWithExceed"/>
+        <tr class="${mealItem.exceed ? 'exceeded' : 'normal'}">
             <td>${mealItem.id}</td>
             <td>${mealItem.dateTime.toLocalDate()} ${mealItem.dateTime.toLocalTime()}</td>
             <td>${mealItem.description}</td>

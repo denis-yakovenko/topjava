@@ -4,11 +4,10 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealWithExceed;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.Month;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -17,7 +16,22 @@ import java.util.stream.Collectors;
  */
 public class MealsUtil {
 
-    public static List<MealWithExceed> getFilteredWithExceeded(List<Meal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
+    public static final List<Meal> MEAL_LIST = Arrays.asList(
+            new Meal(LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500),
+            new Meal(LocalDateTime.of(2015, Month.MAY, 30, 13, 0), "Обед", 1000),
+            new Meal(LocalDateTime.of(2015, Month.MAY, 30, 20, 0), "Ужин", 500),
+            new Meal(LocalDateTime.of(2015, Month.MAY, 31, 10, 0), "Завтрак", 1000),
+            new Meal(LocalDateTime.of(2015, Month.MAY, 31, 13, 0), "Обед", 500),
+            new Meal(LocalDateTime.of(2015, Month.MAY, 31, 20, 0), "Ужин", 510)
+    );
+
+    public static void main(String[] args) {
+        List<MealWithExceed> filteredMealWithExceed = getFilteredWithExceeded(MEAL_LIST, LocalTime.of(7,0),LocalTime.of(12,0),2000);
+        filteredMealWithExceed.forEach(System.out::println);
+        System.out.println(getFilteredWithExceededByCycle(MEAL_LIST, LocalTime.of(7,0),LocalTime.of(12,0),2000));
+    }
+
+    public static List<MealWithExceed> getFilteredWithExceeded(Collection<Meal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
         Map<LocalDate, Integer> caloriesSumByDate = meals.stream()
                 .collect(
                         Collectors.groupingBy(Meal::getDate, Collectors.summingInt(Meal::getCalories))
@@ -45,8 +59,8 @@ public class MealsUtil {
         return new MealWithExceed(meal.getDateTime(), meal.getDescription(), meal.getCalories(), exceeded, meal.getId());
     }
 
-    public static List<MealWithExceed> getAllWithExceed(List<Meal> meals){
-        return getFilteredWithExceeded(meals,LocalTime.MIN,LocalTime.MAX,2000);
+    public static List<MealWithExceed> getWithExceed(Collection<Meal> meals, Integer max){
+        return getFilteredWithExceeded(meals,LocalTime.MIN,LocalTime.MAX,max);
     }
 
 }

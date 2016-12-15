@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import ru.javawebinar.topjava.dao.MealDao;
 import ru.javawebinar.topjava.dao.MealDaoMemory;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.util.MealsUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,22 +25,15 @@ public class MealServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         LOG.debug("MealServlet.doPost");
-        LOG.debug(request.getParameter("dateTime"));
-        //LocalDateTime localDateTime = LocalDateTime.of(2015, Month.MAY, 30, 10, 0);//request.getParameter("dateTime");
-        LocalDateTime localDateTime = LocalDateTime.parse(request.getParameter("dateTime"));
         String id = request.getParameter("id");
-        if(id == null || id.isEmpty())
-        {
-            Meal meal = new Meal(localDateTime,request.getParameter("description"),Integer.parseInt(request.getParameter("calories")),dao.getId());
-            LOG.debug(meal.toString());
-            dao.add(meal);
-        }
-        else
-        {
-            Meal meal = new Meal(localDateTime,request.getParameter("description"),Integer.parseInt(request.getParameter("calories")),Integer.parseInt(id));
-            LOG.debug(meal.toString());
-            dao.update(Integer.parseInt(id),meal);
-        }
+        Meal meal = new Meal(
+                id.isEmpty()?null:Integer.valueOf(id),
+                LocalDateTime.parse(request.getParameter("dateTime")),
+                request.getParameter("description"),
+                Integer.parseInt(request.getParameter("calories"))
+        );
+        LOG.debug(meal.toString());
+        dao.save(meal);
         response.sendRedirect("meals");
     }
 
@@ -56,7 +50,7 @@ public class MealServlet extends HttpServlet {
             request.setAttribute("id", id);
             request.setAttribute("edit", true);
         }
-        request.setAttribute("meals",dao.getAll());
+        request.setAttribute("meals", MealsUtil.getWithExceed(dao.getAll(),2000));
         if (action==null){
             request.getRequestDispatcher("meals.jsp").forward(request,response);
         } else if (action.equalsIgnoreCase("delete")){
