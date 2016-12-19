@@ -19,6 +19,40 @@
 <section>
     <h2><a href="index.html">Home</a></h2>
     <h2>Meal list</h2>
+    <form method="get" action="meals">
+        <table>
+            <tr>
+                <td>
+                    <label>startDate
+                        <input name="startDate" value="${param.startDate}">
+                    </label>
+                </td>
+                <td>
+                    <label>endDate
+                        <input name="endDate" value="${param.endDate}">
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>startTime
+                        <input name="startTime" value="${param.startTime}">
+                    </label>
+                </td>
+                <td>
+                    <label>endTime
+                        <input name="endTime" value="${param.endTime}">
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button type="submit">Filter</button>
+                </td>
+            </tr>
+        </table>
+    </form>
     <a href="meals?action=create">Add Meal</a>
     <hr>
     <table border="1" cellpadding="8" cellspacing="0">
