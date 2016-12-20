@@ -78,7 +78,7 @@ public class MealServlet extends HttpServlet {
             LocalTime startTime = LocalTime.parse(Optional.ofNullable(request.getParameter("startTime")).filter(s->!s.isEmpty()).orElse(LocalTime.MIN.toString()));
             LocalTime endTime = LocalTime.parse(Optional.ofNullable(request.getParameter("endTime")).filter(s->!s.isEmpty()).orElse(LocalTime.MAX.toString()));
             LOG.info(startTime.toString());
-            request.setAttribute("meals", mealRestController.getAllFiltered(startDate, endDate, startTime, endTime));
+            request.setAttribute("meals", mealRestController.getAll(startDate, endDate, startTime, endTime));
             request.getRequestDispatcher("/meals.jsp").forward(request, response);
 
         } else if ("delete".equals(action)) {

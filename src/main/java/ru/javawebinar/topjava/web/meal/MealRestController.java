@@ -7,11 +7,13 @@ import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.to.MealWithExceed;
+import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Collection;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -26,26 +28,39 @@ public class MealRestController {
     @Autowired
     private MealService service;
 
-    public Meal save(Meal meal) { return service.save(meal, AuthorizedUser.id()); }
+    public Meal save(Meal meal) {
+        LOG.info("save " + meal);
+        return service.save(meal, AuthorizedUser.id());
+    }
 
     public void delete(int id) {
+        LOG.info("delete " + id);
         service.delete(id, AuthorizedUser.id());
     }
 
     public Meal get(int id) {
+        LOG.info("get " + id);
         return service.get(id, AuthorizedUser.id());
     }
 
-    public Collection<MealWithExceed> getAllFiltered(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
-        Collection<MealWithExceed> result = MealsUtil.getWithExceeded(
-                service.getAll(AuthorizedUser.id(), startDate, endDate, startTime, endTime),
+    public Collection<MealWithExceed> getAll(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
+        LOG.info("getAll");
+        Collection<MealWithExceed> allMeals = MealsUtil.getWithExceeded(
+                service.getAll(AuthorizedUser.id()),
                 AuthorizedUser.getCaloriesPerDay());
+        List<MealWithExceed> result = new ArrayList<>(
+                allMeals
+                        .stream()
+                        .filter(meal -> DateTimeUtil.isBetween(meal.getDateTime().toLocalTime(), startTime, endTime))
+                        .filter(meal -> DateTimeUtil.isBetween(meal.getDateTime().toLocalDate(), startDate, endDate))
+                        .collect(Collectors.toList())
+        );
         result.forEach(u->LOG.info(u.toString()));
-        return result;
+        return Optional.of(result).orElseGet(Collections::emptyList);
     }
 
     public Collection<MealWithExceed> getAll() {
-        return getAllFiltered(LocalDate.MIN, LocalDate.MAX, LocalTime.MIN, LocalTime.MAX);
+        return getAll(LocalDate.MIN, LocalDate.MAX, LocalTime.MIN, LocalTime.MAX);
     }
 
 }

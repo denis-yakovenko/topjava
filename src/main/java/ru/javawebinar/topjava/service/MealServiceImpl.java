@@ -23,7 +23,7 @@ public class MealServiceImpl implements MealService {
 
     @Override
     public Meal save(Meal meal, int userId) {
-        return repository.save(meal, userId);
+        return checkNotFoundWithId(repository.save(meal, userId),meal.getId());
     }
 
     @Override
@@ -36,6 +36,10 @@ public class MealServiceImpl implements MealService {
         return checkNotFoundWithId(repository.get(id, userId), id);
     }
 
+    @Override
+    public Collection<Meal> getAll(int userId) {
+        return repository.getAll(userId);
+    }
     @Override
     public Collection<Meal> getAll(int userId, LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
         return repository.getAll(userId, startDate, endDate, startTime, endTime);
