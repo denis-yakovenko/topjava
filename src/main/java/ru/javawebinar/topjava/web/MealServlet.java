@@ -19,7 +19,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * User: gkislin
@@ -48,17 +47,31 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        String id = request.getParameter("id");
-
-        Meal meal = new Meal(id.isEmpty() ? null : Integer.valueOf(id),
-                LocalDateTime.parse(request.getParameter("dateTime")),
-                request.getParameter("description"),
-                Integer.valueOf(request.getParameter("calories")));
-
-        LOG.info(meal.isNew() ? "Create {}" : "Update {}", meal);
-        LOG.info("current userId "+String.valueOf(AuthorizedUser.id()));
-        mealRestController.save(meal);
-        response.sendRedirect("meals");
+        String action = request.getParameter("action");
+        if (action == null) {
+            LOG.info("getFiltered");
+            String startDate = request.getParameter("startDate");
+            String endDate = request.getParameter("endDate");
+            String startTime = request.getParameter("startTime");
+            String endTime = request.getParameter("endTime");
+            request.setAttribute("meals", mealRestController.getAll(
+                    (startDate.isEmpty()) ? LocalDate.MIN : LocalDate.parse(startDate),
+                    (endDate.isEmpty()) ? LocalDate.MAX : LocalDate.parse(endDate),
+                    (startTime.isEmpty()) ? LocalTime.MIN : LocalTime.parse(startTime),
+                    (endTime.isEmpty()) ? LocalTime.MAX : LocalTime.parse(endTime))
+            );
+            request.getRequestDispatcher("/meals.jsp").forward(request, response);
+        } else {
+            String id = request.getParameter("id");
+            Meal meal = new Meal(id.isEmpty() ? null : Integer.valueOf(id),
+                    LocalDateTime.parse(request.getParameter("dateTime")),
+                    request.getParameter("description"),
+                    Integer.valueOf(request.getParameter("calories")));
+            LOG.info(meal.isNew() ? "Create {}" : "Update {}", meal);
+            LOG.info("current userId "+String.valueOf(AuthorizedUser.id()));
+            mealRestController.save(meal);
+            response.sendRedirect("meals");
+        }
     }
 
     @Override
@@ -68,25 +81,16 @@ public class MealServlet extends HttpServlet {
             AuthorizedUser.setId(Integer.valueOf(userId));
         }
         LOG.info("current userId "+String.valueOf(AuthorizedUser.id()));
-
         String action = request.getParameter("action");
-
         if (action == null) {
             LOG.info("getAll");
-            LocalDate startDate = LocalDate.parse(Optional.ofNullable(request.getParameter("startDate")).filter(s->!s.isEmpty()).orElse(LocalDate.MIN.toString()));
-            LocalDate endDate = LocalDate.parse(Optional.ofNullable(request.getParameter("endDate")).filter(s->!s.isEmpty()).orElse(LocalDate.MAX.toString()));
-            LocalTime startTime = LocalTime.parse(Optional.ofNullable(request.getParameter("startTime")).filter(s->!s.isEmpty()).orElse(LocalTime.MIN.toString()));
-            LocalTime endTime = LocalTime.parse(Optional.ofNullable(request.getParameter("endTime")).filter(s->!s.isEmpty()).orElse(LocalTime.MAX.toString()));
-            LOG.info(startTime.toString());
-            request.setAttribute("meals", mealRestController.getAll(startDate, endDate, startTime, endTime));
+            request.setAttribute("meals", mealRestController.getAll());
             request.getRequestDispatcher("/meals.jsp").forward(request, response);
-
         } else if ("delete".equals(action)) {
             int id = getId(request);
             LOG.info("Delete {}", id);
             mealRestController.delete(id);
             response.sendRedirect("meals");
-
         } else if ("create".equals(action) || "update".equals(action)) {
             final Meal meal = action.equals("create") ?
                     new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000) :

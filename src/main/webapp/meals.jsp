@@ -19,7 +19,7 @@
 <section>
     <h2><a href="index.html">Home</a></h2>
     <h2>Meal list</h2>
-    <form method="get" action="meals">
+    <form method="post" action="meals">
         <table>
             <tr>
                 <td>
