@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.to.MealWithExceed;
 import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 
@@ -18,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -78,6 +80,8 @@ public class MealServlet extends HttpServlet {
 
         if (action == null) {
             LOG.info("getAll");
+            List<MealWithExceed> test = mealController.getAll();
+            LOG.info(test.toString());
             request.setAttribute("meals", mealController.getAll());
             request.getRequestDispatcher("/meals.jsp").forward(request, response);
 
