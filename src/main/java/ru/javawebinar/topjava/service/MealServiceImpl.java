@@ -20,10 +20,6 @@ public class MealServiceImpl implements MealService {
     @Autowired
     private MealRepository repository;
 
-    public void setRepository(MealRepository repository) {
-        this.repository = repository;
-    }
-
     @Override
     public Meal get(int id, int userId) {
         return checkNotFoundWithId(repository.get(id, userId), id);

@@ -4,17 +4,13 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-        <bean class="ru.javawebinar.topjava.repository.mock.InMemoryUserRepositoryImpl" id="mockUserRepository"/>
+    <bean class="ru.javawebinar.topjava.repository.mock.InMemoryUserRepositoryImpl" id="mockUserRepository"/>
 
-        <bean class="ru.javawebinar.topjava.service.UserServiceImpl" id="mockUserService">
-            <property name="repository" ref="mockUserRepository"/>
-        </bean>
+    <bean class="ru.javawebinar.topjava.service.UserServiceImpl" id="mockUserService"/>
 
     <bean class="ru.javawebinar.topjava.repository.mock.InMemoryMealRepositoryImpl" id="mockMealRepository"/>
 
-    <bean class="ru.javawebinar.topjava.service.MealServiceImpl" id="mockMealService">
-        <property name="repository" ref="mockMealRepository"/>
-    </bean>
+    <bean class="ru.javawebinar.topjava.service.MealServiceImpl" id="mockMealService"/>
 
     <context:annotation-config/>
 
