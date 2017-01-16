@@ -1,3 +1,7 @@
+[![Dependency Status](https://dependencyci.com/github/denis-yakovenko/topjava/badge)](https://dependencyci.com/github/denis-yakovenko/topjava)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/081f338787e94710841c923f0422cad8)](https://www.codacy.com/app/maximka1945/topjava?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=denis-yakovenko/topjava&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://travis-ci.org/denis-yakovenko/topjava.svg?branch=master)](https://travis-ci.org/denis-yakovenko/topjava)
+
 Java Enterprise Online Project 
 ===============================
 Наиболее востребованные технологии /инструменты / фреймворки Java Enterprise:
