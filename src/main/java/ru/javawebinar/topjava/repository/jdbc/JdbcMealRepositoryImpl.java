@@ -8,8 +8,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.MealRepository;
 
 import javax.sql.DataSource;
@@ -17,22 +17,19 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * User: gkislin
- * Date: 26.08.2014
+ * Created by admin on 15.01.2017.
  */
+public abstract class JdbcMealRepositoryImpl implements MealRepository {
 
-@Repository
-public class JdbcMealRepositoryImpl implements MealRepository {
-
-    private static final RowMapper<Meal> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Meal.class);
+    static final RowMapper<Meal> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Meal.class);
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    JdbcTemplate jdbcTemplate;
 
     @Autowired
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    private SimpleJdbcInsert insertMeal;
+    SimpleJdbcInsert insertMeal;
 
     @Autowired
     public JdbcMealRepositoryImpl(DataSource dataSource) {
@@ -88,5 +85,10 @@ public class JdbcMealRepositoryImpl implements MealRepository {
         return jdbcTemplate.query(
                 "SELECT * FROM meals WHERE user_id=?  AND date_time BETWEEN  ? AND ? ORDER BY date_time DESC",
                 ROW_MAPPER, userId, startDate, endDate);
+    }
+
+    @Override
+    public User getUser(int id) {
+        throw new UnsupportedOperationException();
     }
 }

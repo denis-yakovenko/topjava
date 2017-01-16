@@ -67,4 +67,9 @@ public class JpaMealRepositoryImpl implements MealRepository {
                 .setParameter("startDate", startDate)
                 .setParameter("endDate", endDate).getResultList();
     }
+
+    @Override
+    public User getUser(int id) {
+        throw new UnsupportedOperationException();
+    }
 }

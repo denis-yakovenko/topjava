@@ -2,6 +2,7 @@ package ru.javawebinar.topjava.repository.mock;
 
 import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.DateTimeUtil;
 
@@ -61,6 +62,11 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
         return getAllAsStream(userId)
                 .filter(um -> DateTimeUtil.isBetween(um.getDateTime(), startDateTime, endDateTime))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public User getUser(int id) {
+        throw new UnsupportedOperationException();
     }
 
     private Stream<Meal> getAllAsStream(int userId) {

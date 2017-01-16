@@ -1,16 +1,9 @@
 package ru.javawebinar.topjava.service;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import ru.javawebinar.topjava.Profiles;
+import ru.javawebinar.topjava.MealTestData;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
@@ -19,26 +12,20 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
+import static ru.javawebinar.topjava.MealTestData.MEALS;
 import static ru.javawebinar.topjava.UserTestData.*;
 
-@ContextConfiguration({
-        "classpath:spring/spring-app.xml",
-        "classpath:spring/spring-db.xml"
-})
-@RunWith(SpringJUnit4ClassRunner.class)
-@Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-@ActiveProfiles(Profiles.ACTIVE_DB)
-public class UserServiceTest {
+public abstract class UserServiceTest extends ServiceTest{
 
     @Autowired
     private UserService service;
 
-    @Before
+    @Override
     public void setUp() throws Exception {
         service.evictCache();
     }
         
-    @Test
+    @Override
     public void testSave() throws Exception {
         User newUser = new User(null, "New", "new@gmail.com", "newPass", 1555, false, Collections.singleton(Role.ROLE_USER));
         User created = service.save(newUser);
@@ -46,51 +33,59 @@ public class UserServiceTest {
         MATCHER.assertCollectionEquals(Arrays.asList(ADMIN, newUser, USER), service.getAll());
     }
 
-    @Test(expected = DataAccessException.class)
+    @Override
     public void testDuplicateMailSave() throws Exception {
+        thrown.expect(DataAccessException.class);
         service.save(new User(null, "Duplicate", "user@yandex.ru", "newPass", Role.ROLE_USER));
     }
 
-    @Test
+    @Override
     public void testDelete() throws Exception {
         service.delete(USER_ID);
         MATCHER.assertCollectionEquals(Collections.singletonList(ADMIN), service.getAll());
     }
 
-    @Test(expected = NotFoundException.class)
+    @Override
     public void testNotFoundDelete() throws Exception {
+        thrown.expect(NotFoundException.class);
         service.delete(1);
     }
 
-    @Test
+    @Override
     public void testGet() throws Exception {
         User user = service.get(USER_ID);
         MATCHER.assertEquals(USER, user);
     }
 
     @Test(expected = NotFoundException.class)
+    @Override
     public void testGetNotFound() throws Exception {
         service.get(1);
     }
 
-    @Test
+    @Override
     public void testGetByEmail() throws Exception {
         User user = service.getByEmail("user@yandex.ru");
         MATCHER.assertEquals(USER, user);
     }
 
-    @Test
+    @Override
     public void testGetAll() throws Exception {
         Collection<User> all = service.getAll();
         MATCHER.assertCollectionEquals(Arrays.asList(ADMIN, USER), all);
     }
 
-    @Test
+    @Override
     public void testUpdate() throws Exception {
         User updated = new User(USER);
         updated.setName("UpdatedName");
         updated.setCaloriesPerDay(330);
         service.update(updated);
         MATCHER.assertEquals(updated, service.get(USER_ID));
+    }
+
+    @Override
+    public void testGetMeals() throws Exception {
+        MealTestData.MATCHER.assertCollectionEquals(MEALS, service.getMeals(USER_ID));
     }
 }
