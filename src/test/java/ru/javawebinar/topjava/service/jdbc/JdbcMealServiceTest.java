@@ -7,7 +7,7 @@ import ru.javawebinar.topjava.service.MealServiceTest;
 /**
  * Created by admin on 15.01.2017.
  */
-@ActiveProfiles({Profiles.ACTIVE_DB, Profiles.JDBC})
+@ActiveProfiles(Profiles.JDBC)
 public class JdbcMealServiceTest extends MealServiceTest {
     @Override
     public void testGetWithUser() throws Exception {

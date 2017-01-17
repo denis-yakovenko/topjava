@@ -7,6 +7,6 @@ import ru.javawebinar.topjava.service.UserServiceTest;
 /**
  * Created by admin on 15.01.2017.
  */
-@ActiveProfiles({Profiles.ACTIVE_DB, Profiles.DATAJPA})
+@ActiveProfiles(Profiles.DATAJPA)
 public class DataJpaUserServiceTest extends UserServiceTest {
 }
