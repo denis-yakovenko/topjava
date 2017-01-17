@@ -86,6 +86,7 @@ public abstract class UserServiceTest extends ServiceTest{
 
     @Test
     public void testGetWithMeals() throws Exception {
+        MATCHER.assertEquals(USER, service.getWithMeals(USER_ID));
         MealTestData.MATCHER.assertCollectionEquals(MEALS, service.getWithMeals(USER_ID).getMeals());
     }
 }

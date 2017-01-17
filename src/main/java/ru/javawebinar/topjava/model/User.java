@@ -48,7 +48,7 @@ public class User extends NamedEntity {
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
     @Column(name = "calories_per_day", columnDefinition = "int default 2000")

@@ -1,6 +1,5 @@
 package ru.javawebinar.topjava;
 
-import org.junit.Assert;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.Role;
@@ -17,6 +16,9 @@ import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
 
+import static java.time.LocalDateTime.of;
+import static ru.javawebinar.topjava.UserTestData.USER_ID;
+
 /**
  * User: gkislin
  * Date: 22.08.2014
@@ -26,16 +28,12 @@ public class SpringMain {
         try (GenericXmlApplicationContext appCtx = new GenericXmlApplicationContext()) {
 
             /* Context with real DB */
-            appCtx.getEnvironment().setActiveProfiles(Profiles.POSTGRES, Profiles.DATAJPA);
+            appCtx.getEnvironment().setActiveProfiles(Profiles.ACTIVE_DB, Profiles.DATAJPA);
             appCtx.load("spring/spring-app.xml", "spring/spring-db.xml");
             /* Context with mock DB */
             /*appCtx.load("spring/spring-app.xml", "spring/mock.xml");*/
             appCtx.refresh();
             System.out.println("Bean definition names: " + Arrays.toString(appCtx.getBeanDefinitionNames()));
-
-            /* Checking conformity between repository/dataSource and profiles */
-            Assert.assertTrue(Arrays.asList(appCtx.getBeanDefinitionNames()).contains("dataJpaMealRepositoryImpl"));
-            Assert.assertTrue(appCtx.getBean("dataSource") instanceof org.apache.tomcat.jdbc.pool.DataSource);
 
             AdminRestController adminUserController = appCtx.getBean(AdminRestController.class);
             adminUserController.create(new User(null, "userName", "email", "password", Role.ROLE_ADMIN));
@@ -56,6 +54,13 @@ public class SpringMain {
             UserService userService = appCtx.getBean(UserService.class);
             User u = userService.getWithMeals(100000);
             System.out.println(u.getMeals());
+
+            System.out.println("*********************************");
+            /* Test amount of transaction when save meal */
+            Meal created = new Meal(999, of(2020, Month.DECEMBER, 31, 23, 59), "Новогодний Ужин", 2500);
+            mealService.save(created, USER_ID);
+            System.out.println("*********************************");
+
         }
     }
 }

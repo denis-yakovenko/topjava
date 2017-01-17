@@ -43,7 +43,7 @@ public abstract class JdbcMealRepositoryImpl implements MealRepository {
                 .addValue("id", meal.getId())
                 .addValue("description", meal.getDescription())
                 .addValue("calories", meal.getCalories())
-                .addValue("date_time", getLocalDateTime(meal.getDateTime()))
+                .addValue("date_time", convertDateTime(meal.getDateTime()))
                 .addValue("user_id", userId);
 
         if (meal.isNew()) {
@@ -83,7 +83,7 @@ public abstract class JdbcMealRepositoryImpl implements MealRepository {
     public List<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
         return jdbcTemplate.query(
                 "SELECT * FROM meals WHERE user_id=?  AND date_time BETWEEN  ? AND ? ORDER BY date_time DESC",
-                ROW_MAPPER, userId, getLocalDateTime(startDate), getLocalDateTime(endDate));
+                ROW_MAPPER, userId, convertDateTime(startDate), convertDateTime(endDate));
     }
 
     @Override
@@ -91,8 +91,8 @@ public abstract class JdbcMealRepositoryImpl implements MealRepository {
         throw new UnsupportedOperationException();
     }
 
-    public Object getLocalDateTime(LocalDateTime localDateTime){
-        return localDateTime;
+    public <T> T convertDateTime(LocalDateTime localDateTime){
+        return (T)(localDateTime);
     }
 
 }

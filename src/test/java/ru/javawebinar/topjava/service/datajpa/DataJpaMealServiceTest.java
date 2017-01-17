@@ -2,11 +2,11 @@ package ru.javawebinar.topjava.service.datajpa;
 
 import org.springframework.test.context.ActiveProfiles;
 import ru.javawebinar.topjava.Profiles;
-import ru.javawebinar.topjava.service.UserServiceTest;
+import ru.javawebinar.topjava.service.MealServiceTest;
 
 /**
  * Created by admin on 15.01.2017.
  */
-@ActiveProfiles({Profiles.POSTGRES, Profiles.DATAJPA})
-public class PostgresDataJpaUserServiceTest extends UserServiceTest {
+@ActiveProfiles({Profiles.ACTIVE_DB, Profiles.DATAJPA})
+public class DataJpaMealServiceTest extends MealServiceTest {
 }
