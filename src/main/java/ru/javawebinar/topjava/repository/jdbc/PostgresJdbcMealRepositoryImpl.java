@@ -18,4 +18,5 @@ public class PostgresJdbcMealRepositoryImpl extends JdbcMealRepositoryImpl {
     public PostgresJdbcMealRepositoryImpl(DataSource dataSource) {
         super(dataSource);
     }
+
 }

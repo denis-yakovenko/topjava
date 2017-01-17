@@ -2,7 +2,6 @@ package ru.javawebinar.topjava.repository.mock;
 
 import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.DateTimeUtil;
 
@@ -65,9 +64,14 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     }
 
     @Override
-    public User getUser(int id) {
+    public Meal getWithUser(int id, int userId) {
         throw new UnsupportedOperationException();
     }
+
+    /*@Override
+    public User getUser(int id) {
+        throw new UnsupportedOperationException();
+    }*/
 
     private Stream<Meal> getAllAsStream(int userId) {
         Map<Integer, Meal> meals = repository.get(userId);

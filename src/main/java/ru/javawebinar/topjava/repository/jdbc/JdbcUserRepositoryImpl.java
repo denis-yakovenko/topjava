@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
-import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 
@@ -86,7 +85,7 @@ public class JdbcUserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<Meal> getMeals(int id) {
+    public User getWithMeals(int id) {
         throw new UnsupportedOperationException();
     }
 }

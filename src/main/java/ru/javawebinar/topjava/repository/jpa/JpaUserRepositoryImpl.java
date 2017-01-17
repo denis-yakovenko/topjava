@@ -3,7 +3,6 @@ package ru.javawebinar.topjava.repository.jpa;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 
@@ -72,7 +71,7 @@ public class JpaUserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<Meal> getMeals(int id) {
+    public User getWithMeals(int id) {
         throw new UnsupportedOperationException();
     }
 }

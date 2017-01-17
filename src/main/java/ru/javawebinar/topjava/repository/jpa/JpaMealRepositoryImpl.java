@@ -69,7 +69,8 @@ public class JpaMealRepositoryImpl implements MealRepository {
     }
 
     @Override
-    public User getUser(int id) {
+    public Meal getWithUser(int id, int userId) {
         throw new UnsupportedOperationException();
     }
+
 }

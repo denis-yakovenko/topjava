@@ -1,15 +1,16 @@
-package ru.javawebinar.topjava.service;
+package ru.javawebinar.topjava.service.jpa;
 
 import org.springframework.test.context.ActiveProfiles;
 import ru.javawebinar.topjava.Profiles;
+import ru.javawebinar.topjava.service.MealServiceTest;
 
 /**
  * Created by admin on 15.01.2017.
  */
-@ActiveProfiles({Profiles.POSTGRES, Profiles.JPA})
-public class PostgresJpaMealServiceTest extends MealServiceTest {
+@ActiveProfiles({Profiles.HSQLDB, Profiles.JPA})
+public class HsqldbJpaMealServiceTest extends MealServiceTest {
     @Override
-    public void testUser() throws Exception {
+    public void testGetWithUser() throws Exception {
         thrown.expect(UnsupportedOperationException.class);
         throw new UnsupportedOperationException();
     }

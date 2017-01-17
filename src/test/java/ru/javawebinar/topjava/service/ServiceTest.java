@@ -2,9 +2,7 @@ package ru.javawebinar.topjava.service;
 
 
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.Stopwatch;
 import org.junit.runner.Description;
@@ -50,46 +48,4 @@ public abstract class ServiceTest {
                 results +
                 "---------------------------------\n");
     }
-
-    @Before
-    public void setUp() throws Exception {}
-
-    @Test
-    public void testSave() throws Exception {}
-
-    @Test
-    public void testDuplicateMailSave() throws Exception {}
-
-    @Test
-    public void testDelete() throws Exception {}
-
-    @Test
-    public void testNotFoundDelete() throws Exception {}
-
-    @Test
-    public void testGet() throws Exception {}
-
-    @Test
-    public void testGetNotFound() throws Exception {}
-
-    @Test
-    public void testGetByEmail() throws Exception {}
-
-    @Test
-    public void testGetAll() throws Exception {}
-
-    @Test
-    public void testGetBetween() throws Exception {}
-
-    @Test
-    public void testUpdate() throws Exception {}
-
-    @Test
-    public void testUpdateNotFound() throws Exception {}
-
-    @Test
-    public void testGetMeals() throws Exception {}
-
-    @Test
-    public void testUser() throws Exception {}
 }

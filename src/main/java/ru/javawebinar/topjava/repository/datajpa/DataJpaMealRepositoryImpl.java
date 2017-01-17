@@ -3,7 +3,6 @@ package ru.javawebinar.topjava.repository.datajpa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.MealRepository;
 
 import java.time.LocalDateTime;
@@ -36,6 +35,7 @@ public class DataJpaMealRepositoryImpl implements MealRepository {
         return crudRepository.delete(id, userId)!=0;
     }
 
+    @Override
     public Meal get(int id, int userId) {
         return crudRepository.findOne(id, userId);
     }
@@ -51,7 +51,7 @@ public class DataJpaMealRepositoryImpl implements MealRepository {
     }
 
     @Override
-    public User getUser(int id) {
-        return crudRepository.getUser(id);
+    public Meal getWithUser(int id, int userId) {
+        return crudRepository.getWithUser(id, userId);
     }
 }

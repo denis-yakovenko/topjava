@@ -16,6 +16,7 @@ import java.util.List;
  * gkislin
  * 02.10.2016
  */
+@Transactional(readOnly = true)
 public interface CrudMealRepository extends JpaRepository<Meal, Integer> {
 
     @Override
@@ -36,6 +37,6 @@ public interface CrudMealRepository extends JpaRepository<Meal, Integer> {
     @Query("DELETE FROM Meal m WHERE m.id=:id and m.user.id=:userId")
     int delete(@Param("id") int id, @Param("userId") int userId);
 
-    @Query("SELECT u from User u where u.id=(select m.user.id from Meal m where m.id=:id)")
-    User getUser(@Param("id") int id);
+    @Query("SELECT m FROM Meal m LEFT JOIN FETCH m.user LEFT JOIN FETCH m.user.roles WHERE m.id=:id and m.user.id=:userId")
+    Meal getWithUser(@Param("id") int id, @Param("userId") int userId);
 }
