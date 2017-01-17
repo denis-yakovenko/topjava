@@ -162,6 +162,18 @@
 
     <profiles>
         <profile>
+            <id>datajpa</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>jpa</id>
+        </profile>
+        <profile>
+            <id>jdbc</id>
+        </profile>
+        <profile>
             <id>hsqldb</id>
             <dependencies>
                 <dependency>
@@ -170,9 +182,6 @@
                     <version>2.3.4</version>
                 </dependency>
             </dependencies>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
         </profile>
         <profile>
             <id>postgres</id>
