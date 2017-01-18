@@ -45,11 +45,17 @@ public class SpringMain {
             User u = userService.getWithMeals(100000);
             System.out.println(u.getMeals());*/
 
-            //System.out.println("*********************************");
-            // Test amount of transaction when save meal
-            Meal created = new Meal(999, of(2020, Month.DECEMBER, 31, 23, 59), "Новогодний Ужин", 2500);
+            // Test amount of transaction when save/update meal
+            System.out.println("********************");
+            Meal created = new Meal(null, of(2020, Month.DECEMBER, 31, 23, 59), "Новогодний Ужин", 2500);
             mealService.save(created, USER_ID);
-            //System.out.println("*********************************");
+            System.out.println("********************");
+            System.out.println(mealService.getAll(USER_ID));
+            System.out.println("********************");
+            //System.out.println(mealService.getAll(USER_ID));
+            created.setCalories(3000);
+            mealService.update(created, USER_ID);
+            System.out.println("********************");
         }
     }
 }
