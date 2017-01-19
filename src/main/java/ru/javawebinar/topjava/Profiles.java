@@ -1,15 +1,28 @@
 package ru.javawebinar.topjava;
 
-/**
- * User: gkislin
- * Date: 19.08.2014
- */
+import org.springframework.util.ClassUtils;
+
 public class Profiles {
     public static final String
             POSTGRES = "postgres",
             HSQLDB = "hsqldb",
             JDBC = "jdbc",
-            JPA = "jpa";
+            JPA = "jpa",
+            DATAJPA = "datajpa";
 
-    public static final String ACTIVE_DB = POSTGRES;
+    public static final String DB_IMPLEMENTATION = DATAJPA;
+
+    public static String getActiveDbProfile() {
+        try {
+            Class.forName("org.postgresql.Driver", true, ClassUtils.getDefaultClassLoader());
+            return Profiles.POSTGRES;
+        } catch (ClassNotFoundException ex) {
+            try {
+                Class.forName("org.hsqldb.jdbcDriver", true, ClassUtils.getDefaultClassLoader());
+                return Profiles.HSQLDB;
+            } catch (ClassNotFoundException e) {
+                throw new IllegalStateException("Could not resolve DB profile");
+            }
+        }
+    }
 }
