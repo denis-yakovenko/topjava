@@ -3,10 +3,12 @@ package ru.javawebinar.topjava.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import ru.javawebinar.topjava.AuthorizedUser;
+import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.service.UserService;
+import ru.javawebinar.topjava.util.MealsUtil;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,23 +19,33 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class RootController {
     @Autowired
-    private UserService service;
+    private UserService userService;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @Autowired
+    private MealService mealService;
+
+    @GetMapping("/")
     public String root() {
         return "index";
     }
 
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    @GetMapping("/users")
     public String users(Model model) {
-        model.addAttribute("users", service.getAll());
+        model.addAttribute("users", userService.getAll());
         return "users";
     }
 
-    @RequestMapping(value = "/users", method = RequestMethod.POST)
+    @PostMapping("/users")
     public String setUser(HttpServletRequest request) {
         int userId = Integer.valueOf(request.getParameter("userId"));
         AuthorizedUser.setId(userId);
         return "redirect:meals";
+    }
+
+    @GetMapping("/meals")
+    public String meals(Model model) {
+        model.addAttribute("meals",
+                MealsUtil.getWithExceeded(mealService.getAll(AuthorizedUser.id()), AuthorizedUser.getCaloriesPerDay()));
+        return "meals";
     }
 }
