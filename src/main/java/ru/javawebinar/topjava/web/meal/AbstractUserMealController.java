@@ -23,11 +23,11 @@ import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
  * 06.03.2015.
  */
 @Controller
-public class MealRestController {
-    private static final Logger LOG = LoggerFactory.getLogger(MealRestController.class);
+public abstract class AbstractUserMealController {
+    protected static final Logger LOG = LoggerFactory.getLogger(AbstractUserMealController.class);
 
     @Autowired
-    private MealService service;
+    protected MealService service;
 
     public Meal get(int id) {
         int userId = AuthorizedUser.id();
