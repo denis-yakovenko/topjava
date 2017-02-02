@@ -1,10 +1,12 @@
 package ru.javawebinar.topjava.web.meal;
 
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import ru.javawebinar.topjava.TestUtil;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.web.AbstractControllerTest;
 import ru.javawebinar.topjava.web.json.JsonUtil;
@@ -27,6 +29,9 @@ import static ru.javawebinar.topjava.util.MealsUtil.DEFAULT_CALORIES_PER_DAY;
 public class MealRestControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = MealRestController.REST_URL + '/';
+
+    @Autowired
+    protected MealService mealService;
 
     @Test
     public void testGet() throws Exception {
@@ -91,10 +96,8 @@ public class MealRestControllerTest extends AbstractControllerTest {
     public void testGetBetween() throws Exception {
         TestUtil.print(mockMvc.perform(
                 get(REST_URL + "filter")
-                        /*.param("startDateTime","2015-05-30T00:00:00.000")
-                        .param("endDateTime","2015-05-30T23:59:00.000")*/
-                        .param("startDateTime","2015-05-30 00:00")
-                        .param("endDateTime","2015-05-30 23:59")
+                        .param("startDateTime","2015-05-30T00:00:00.000")
+                        .param("endDateTime","2015-05-30T23:59:00.000")
                 )
                         .andExpect(status().isOk())
                         .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

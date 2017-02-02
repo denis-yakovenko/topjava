@@ -27,9 +27,7 @@
           class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
         <property name="converters">
             <set>
-                <bean class="ru.javawebinar.topjava.util.LocalDateTimeConverter">
-                    <constructor-arg value="yyyy-MM-dd HH:mm"/>
-                </bean>
+                <bean class="ru.javawebinar.topjava.util.LocalDateTimeConverter"/>
             </set>
         </property>
     </bean>
