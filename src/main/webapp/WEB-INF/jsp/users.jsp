@@ -6,6 +6,7 @@
 <html>
 <jsp:include page="fragments/headTag.jsp"/>
 <script type="text/javascript" src="resources/js/datatablesUtil.js" defer></script>
+<script type="text/javascript" src="resources/js/userDatatablesUtil.js" defer></script>
 <script type="text/javascript" src="resources/js/userDatatables.js" defer></script>
 <body>
 <jsp:include page="fragments/bodyHeader.jsp"/>
@@ -34,13 +35,18 @@
                     </thead>
                     <c:forEach items="${users}" var="user">
                         <jsp:useBean id="user" scope="page" type="ru.javawebinar.topjava.model.User"/>
-                        <tr id="${user.id}">
+                        <tr id="${user.id}" <c:if test="${!user.enabled}">class="danger"</c:if>>
                             <td><c:out value="${user.name}"/></td>
                             <td><a href="mailto:${user.email}">${user.email}</a></td>
                             <td>${user.roles}</td>
                             <td>
+                                <form class="form-horizontal" method="post" id="entity${user.id}">
+                                    <input type="text" hidden="hidden" id="id${user.id}" name="id" value="${user.id}">
+                                    <input type="text" hidden="hidden" id="enabled${user.id}" name="enabled">
                                 <input type="checkbox"
+                                       onclick="$('#enabled${user.id}').val(this.checked);updateEntity(${user.id},'enabled')"
                                        <c:if test="${user.enabled}">checked</c:if> id="${user.id}"/>
+                                </form>
                             </td>
                             <td><fmt:formatDate value="${user.registered}" pattern="dd-MMMM-yyyy"/></td>
                             <td><a class="btn btn-xs btn-primary edit">

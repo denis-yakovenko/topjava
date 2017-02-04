@@ -6,6 +6,7 @@
 <html>
 <jsp:include page="fragments/headTag.jsp"/>
 <script type="text/javascript" src="resources/js/datatablesUtil.js" defer></script>
+<script type="text/javascript" src="resources/js/mealDatatablesUtil.js" defer></script>
 <script type="text/javascript" src="resources/js/mealDatatables.js" defer></script>
 <body>
 <jsp:include page="fragments/bodyHeader.jsp"/>
@@ -18,7 +19,7 @@
         <div class="shadow">
     <h3><spring:message code="meals.title"/></h3>
 
-            <form method="post" action="meals/filter" id="mealsFilter">
+            <form class="form-horizontal" method="post" id="filterForm">
                 <dl>
                     <dt><spring:message code="meals.startDate"/>:</dt>
                     <dd><input type="date" name="startDate" value="${param.startDate}"></dd>
@@ -35,7 +36,8 @@
                     <dt><spring:message code="meals.endTime"/>:</dt>
                     <dd><input type="time" name="endTime" value="${param.endTime}"></dd>
                 </dl>
-                <button type="submit"><spring:message code="meals.filter"/></button>
+                <button class="btn btn-success" type="button" onclick="filterTable()"><spring:message code="meals.filter"/></button>
+                <button class="btn btn-danger" type="reset"><spring:message code="meals.reset"/></button>
             </form>
 
             <div class="view-box">

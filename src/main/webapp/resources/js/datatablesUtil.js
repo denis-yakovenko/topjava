@@ -39,22 +39,6 @@ function updateTable() {
     });
 }
 
-function save() {
-    var form = $('#detailsForm');
-    console.log(form.serialize());
-    console.log(ajaxUrl);
-    $.ajax({
-        type: "POST",
-        url: ajaxUrl,
-        data: form.serialize(),
-        success: function () {
-            $('#editRow').modal('hide');
-            updateTable();
-            successNoty('Saved');
-        }
-    });
-}
-
 var failedNote;
 
 function closeNoty() {
@@ -81,11 +65,7 @@ function failNoty(event, jqXHR, options, jsExc) {
     console.log(options);
     console.log(jsExc);
     failedNote = noty({
-        text: 'Failed: ' + jqXHR.statusText + "<br>"
-        +event+"<br>"
-        +options+"<br>"
-        +jsExc+"<br>"
-        ,
+        text: 'Failed: ' + jqXHR.statusText + "<br>",
         type: 'error',
         layout: 'bottomRight'
     });
