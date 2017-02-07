@@ -3,6 +3,12 @@ function makeEditable() {
         deleteRow($(this).parent().parent().attr("id"));
     });
 
+    $('.update').change(function () {
+        var isCheckbox = $(this).is(":checkbox");
+        var value = isCheckbox ? $(this).prop("checked") : $(this).val();
+        updateRow($(this).parent().parent().attr("id"), $(this).attr("name"), value);
+    });
+
     $('#detailsForm').submit(function () {
         save();
         return false;
@@ -29,13 +35,29 @@ function deleteRow(id) {
     });
 }
 
-function updateTable() {
-    $.get(ajaxUrl, function (data) {
-        datatableApi.clear();
-        $.each(data, function (key, item) {
-            datatableApi.row.add(item);
-        });
-        datatableApi.draw();
+function updateRow(id, field, value) {
+    $.ajax({
+        type: "POST",
+        url: ajaxUrl + id + "/updateField",
+        data: field+"="+value,
+        success: function () {
+            updateTable();
+            successNoty('Entity updated');
+        }
+    });
+}
+
+function save() {
+    var form = $('#detailsForm');
+    $.ajax({
+        type: "POST",
+        url: ajaxUrl,
+        data: form.serialize(),
+        success: function () {
+            $('#editRow').modal('hide');
+            updateTable();
+            successNoty('Saved');
+        }
     });
 }
 

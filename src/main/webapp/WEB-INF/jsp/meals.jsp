@@ -36,8 +36,8 @@
                     <dt><spring:message code="meals.endTime"/>:</dt>
                     <dd><input type="time" name="endTime" value="${param.endTime}"></dd>
                 </dl>
-                <button class="btn btn-success" type="button" onclick="filterTable()"><spring:message code="meals.filter"/></button>
-                <button class="btn btn-danger" type="reset"><spring:message code="meals.reset"/></button>
+                <button class="btn btn-success" type="button" onclick="updateTable()"><spring:message code="meals.filter"/></button>
+                <button class="btn btn-danger" type="button" onclick="$('#filterForm').trigger('reset');updateTable();"><spring:message code="meals.reset"/></button>
             </form>
 
             <div class="view-box">

@@ -37,24 +37,12 @@
                         <jsp:useBean id="user" scope="page" type="ru.javawebinar.topjava.model.User"/>
                         <tr id="${user.id}" <c:if test="${!user.enabled}">class="danger"</c:if>>
                             <td><c:out value="${user.name}"/></td>
-                            <td><a href="mailto:${user.email}">${user.email}</a></td>
+                            <td><input type="text" class="update" name="email" value="${user.email}"/></td>
                             <td>${user.roles}</td>
-                            <td>
-                                <form class="form-horizontal" method="post" id="entity${user.id}">
-                                    <input type="text" hidden="hidden" id="id${user.id}" name="id" value="${user.id}">
-                                    <input type="text" hidden="hidden" id="enabled${user.id}" name="enabled">
-                                <input type="checkbox"
-                                       onclick="$('#enabled${user.id}').val(this.checked);updateEntity(${user.id},'enabled')"
-                                       <c:if test="${user.enabled}">checked</c:if> id="${user.id}"/>
-                                </form>
-                            </td>
+                            <td><input type="checkbox" class="update" name="enabled" <c:if test="${user.enabled}">checked</c:if> id="${user.id}"/></td>
                             <td><fmt:formatDate value="${user.registered}" pattern="dd-MMMM-yyyy"/></td>
-                            <td><a class="btn btn-xs btn-primary edit">
-                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                            </a></td>
-                            <td><a class="btn btn-xs btn-danger delete">
-                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                            </a></td>
+                            <td><a class="btn btn-xs btn-primary edit"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></td>
+                            <td><a class="btn btn-xs btn-danger delete"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
                         </tr>
                     </c:forEach>
                 </table>

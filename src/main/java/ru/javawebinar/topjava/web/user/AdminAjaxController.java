@@ -39,13 +39,21 @@ public class AdminAjaxController extends AbstractUserController {
         }
     }
 
-    @PostMapping("/{id}/enabled")
-    public void setEnabled(
+    @PostMapping("/{id}/updateField")
+    public void updateField(
             @PathVariable("id") int id,
-            @RequestParam("enabled") boolean enabled
+            @RequestParam(value = "enabled", required = false) Boolean enabled,
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "email", required = false) String email,
+            @RequestParam(value = "password", required = false) String password,
+            @RequestParam(value = "caloriesPerDay", required = false) Integer caloriesPerDay
     ){
         User user = super.get(id);
-        user.setEnabled(enabled);
+        if (enabled != null) {user.setEnabled(enabled);}
+        if (name != null) {user.setName(name);}
+        if (email != null) {user.setEmail(email);}
+        if (password != null) {user.setPassword(password);}
+        if (caloriesPerDay != null) {user.setCaloriesPerDay(caloriesPerDay);}
         super.update(user, id);
     }
 }
