@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.service.UserService;
+import ru.javawebinar.topjava.to.UserTo;
 
 import java.util.List;
 
@@ -47,8 +48,18 @@ public abstract class AbstractUserController {
         service.update(user);
     }
 
+    public void update(UserTo userTo) {
+        log.info("update " + userTo);
+        service.update(userTo);
+    }
+
     public User getByMail(String email) {
         log.info("getByEmail " + email);
         return service.getByEmail(email);
+    }
+
+    public void enable(int id, boolean enabled) {
+        log.info((enabled ? "enable " : "disable ") + id);
+        service.enable(id, enabled);
     }
 }
