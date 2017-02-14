@@ -26,7 +26,10 @@ $(function () {
         "info": true,
         "columns": [
             {
-                "data": "dateTime"
+                "data": "dateTime",
+                "render": function (date, type, row) {
+                        return date.substring(0, 16).replace("T"," ");
+                }
             },
             {
                 "data": "description"
@@ -54,9 +57,10 @@ $(function () {
         "createdRow": function (row, data, dataIndex) {
             if (data.exceed) {
                 $(row).addClass("exceeded");
+            } else {
+                $(row).addClass("normal");
             }
         },
         "initComplete": makeEditable
     });
-    makeEditable();
 });

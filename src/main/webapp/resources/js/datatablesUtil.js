@@ -1,26 +1,16 @@
 var form;
 
 $(function() {
-    $.datetimepicker.setDateFormatter({
-        parseDate: function (date, format) {
-            var d = moment(date, format);
-            return d.isValid() ? d.toDate() : false;
-        },
-
-        formatDate: function (date, format) {
-            return moment(date).format(format);
-        }
-    });
     $('.datetimepicker').datetimepicker({
-        format:'YYYY-MM-DDTHH:mm',
+        format:'Y-m-d H:i',
     });
     $('.datepicker').datetimepicker({
         timepicker:false,
-        format:'YYYY-MM-DD'
+        format:'Y-m-d'
     });
     $('.timepicker').datetimepicker({
         datepicker:false,
-        format:'HH:mm'
+        format:'H:i'
     });
 });
 
@@ -33,8 +23,6 @@ function makeEditable() {
 
 function add(title) {
     $('#modalTitle').html(title);
-    // form.find(":input").val("");
-    // form.trigger('reset');
     form[0].reset();
     $('#editRow').modal();
 }
@@ -43,6 +31,7 @@ function updateRow(id) {
     $('#modalTitle').html(editTitle);
     $.get(ajaxUrl + id, function (data) {
         $.each(data, function (key, value) {
+            if (key=="dateTime") value = value.substring(0, 16).replace("T"," ");
             form.find("input[name='" + key + "']").val(value);
         });
         $('#editRow').modal();
