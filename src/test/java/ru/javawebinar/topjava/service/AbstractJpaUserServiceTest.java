@@ -20,6 +20,7 @@ abstract public class AbstractJpaUserServiceTest extends AbstractUserServiceTest
     private JpaUtil jpaUtil;
 
     @Before
+    @Override
     public void setUp() throws Exception {
         super.setUp();
         jpaUtil.clear2ndLevelHibernateCache();
@@ -27,9 +28,9 @@ abstract public class AbstractJpaUserServiceTest extends AbstractUserServiceTest
 
     @Test
     public void testValidation() throws Exception {
-        validateRootCause(() -> service.save(new User(null, "  ", "invalid@yandex.ru", "password", Role.ROLE_USER)), ConstraintViolationException.class);
-        validateRootCause(() -> service.save(new User(null, "User", "  ", "password", Role.ROLE_USER)), ConstraintViolationException.class);
-        validateRootCause(() -> service.save(new User(null, "User", "invalid@yandex.ru", "  ", Role.ROLE_USER)), ConstraintViolationException.class);
+        validateRootCause(() -> service.save(new User(null, "  ", "invalid@yandex.ru", "password", 2000, Role.ROLE_USER)), ConstraintViolationException.class);
+        validateRootCause(() -> service.save(new User(null, "User", "  ", "password", 2000, Role.ROLE_USER)), ConstraintViolationException.class);
+        validateRootCause(() -> service.save(new User(null, "User", "invalid@yandex.ru", "  ", 2000, Role.ROLE_USER)), ConstraintViolationException.class);
         validateRootCause(() -> service.save(new User(null, "User", "invalid@yandex.ru", "password", 9, true, Collections.emptySet())), ConstraintViolationException.class);
         validateRootCause(() -> service.save(new User(null, "User", "invalid@yandex.ru", "password", 10001, true, Collections.emptySet())), ConstraintViolationException.class);
     }

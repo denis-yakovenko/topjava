@@ -18,6 +18,7 @@
 
     <http>
         <intercept-url pattern="/login" access="permitAll"/>
+        <intercept-url pattern="/register" access="permitAll"/>
 
         <intercept-url pattern="/**/admin/**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
@@ -26,11 +27,15 @@
                     authentication-failure-url="/login?error=true"
                     login-processing-url="/spring_security_check"/>
         <logout logout-success-url="/login"/>
-        <csrf disabled="true"/>
+        <!--<csrf disabled="true"/>-->
     </http>
+
+    <beans:bean class="ru.javawebinar.topjava.util.PasswordUtil" id="passwordEncoder" factory-method="getPasswordEncoder"/>
 
     <authentication-manager>
         <authentication-provider user-service-ref="userService">
+            <password-encoder ref="passwordEncoder"/>
+
             <!--
                         <jdbc-user-service data-source-ref="dataSource"
                                            users-by-username-query="SELECT email, password, enabled FROM users WHERE email = ?"

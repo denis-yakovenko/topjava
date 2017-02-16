@@ -5,24 +5,34 @@ function makeEditable() {
     $(document).ajaxError(function (event, jqXHR, options, jsExc) {
         failNoty(event, jqXHR, options, jsExc);
     });
+
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    $(document).ajaxSend(function(e, xhr, options) {
+        xhr.setRequestHeader(header, token);
+    });
 }
 
 function add(title) {
     $('#modalTitle').html(title);
-    // form.find(":input").val("");
-    // form.trigger('reset');
-    form[0].reset();
+    form.find(":input").val("");
     $('#editRow').modal();
 }
 
 function updateRow(id) {
-    $('#modalTitle').html(editTitle);
+    $('#modalTitle').html(i18n[editTitleKey]);
     $.get(ajaxUrl + id, function (data) {
         $.each(data, function (key, value) {
-            form.find("input[name='" + key + "']").val(value);
+            form.find("input[name='" + key + "']").val(
+                key === "dateTime" ? formatDate(value) : value
+            );
         });
         $('#editRow').modal();
     });
+}
+
+function formatDate(date) {
+    return date.replace('T', ' ').substr(0, 16);
 }
 
 function deleteRow(id) {
@@ -74,8 +84,9 @@ function successNoty(key) {
 
 function failNoty(event, jqXHR, options, jsExc) {
     closeNoty();
+    var errorInfo = $.parseJSON(jqXHR.responseText);
     failedNote = noty({
-        text: i18n['common.failed'] + ': ' + jqXHR.statusText + "<br>" + jqXHR.responseJSON,
+        text: i18n['common.failed'] + ': ' + jqXHR.statusText + "<br>"+ errorInfo.cause + "<br>" + errorInfo.detail,
         type: 'error',
         layout: 'bottomRight'
     });

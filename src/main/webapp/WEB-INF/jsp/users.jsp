@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <html>
 <jsp:include page="fragments/headTag.jsp"/>
@@ -46,8 +47,8 @@
                 <h2 class="modal-title" id="modalTitle"></h2>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" id="detailsForm">
-                    <input type="text" hidden="hidden" id="id" name="id">
+                <form:form class="form-horizontal" id="detailsForm">
+                    <input type="hidden" id="id" name="id">
 
                     <div class="form-group">
                         <label for="name" class="control-label col-xs-3"><spring:message code="users.name"/></label>
@@ -80,18 +81,10 @@
                             </button>
                         </div>
                     </div>
-                </form>
+                </form:form>
             </div>
         </div>
     </div>
 </div>
 </body>
-<script type="text/javascript">
-    var i18n = [];
-
-    var editTitle ='<spring:message code="users.edit"/>';
-    <c:forEach var='key' items='<%=new String[]{"common.deleted","common.saved","common.enabled","common.disabled","common.failed"}%>'>
-    i18n['${key}'] = '<spring:message code="${key}"/>';
-    </c:forEach>
-</script>
 </html>
