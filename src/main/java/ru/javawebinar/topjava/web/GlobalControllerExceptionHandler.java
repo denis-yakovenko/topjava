@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
  * Date: 23.09.2014
  */
 @ControllerAdvice
+@Order(Ordered.HIGHEST_PRECEDENCE + 2)
 public class GlobalControllerExceptionHandler {
     private static final Logger LOG = LoggerFactory.getLogger(GlobalControllerExceptionHandler.class);
 
