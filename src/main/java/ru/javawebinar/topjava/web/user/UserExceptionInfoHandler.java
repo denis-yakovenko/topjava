@@ -7,11 +7,15 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import ru.javawebinar.topjava.util.exception.ErrorInfo;
-import ru.javawebinar.topjava.web.ExceptionInfoHandler;
 
 import javax.servlet.http.HttpServletRequest;
+
+import static ru.javawebinar.topjava.web.ExceptionInfoHandler.logAndGetErrorInfo;
 
 /**
  * User: gkislin
@@ -19,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ControllerAdvice(basePackages = "ru.javawebinar.topjava.web.user")
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class UserExceptionInfoHandler extends ExceptionInfoHandler {
+public class UserExceptionInfoHandler {
 
     @Autowired
     private MessageSource messageSource;

@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import ru.javawebinar.topjava.util.exception.ErrorInfo;
-import ru.javawebinar.topjava.web.ExceptionInfoHandler;
 
 import javax.servlet.http.HttpServletRequest;
+
+import static ru.javawebinar.topjava.web.ExceptionInfoHandler.logAndGetErrorInfo;
 
 /**
  * User: gkislin
@@ -22,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ControllerAdvice(basePackages = "ru.javawebinar.topjava.web.meal")
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class MealExceptionInfoHandler extends ExceptionInfoHandler {
+public class MealExceptionInfoHandler {
 
     @Autowired
     private MessageSource messageSource;

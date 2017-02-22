@@ -21,8 +21,8 @@ import javax.validation.ValidationException;
  */
 @ControllerAdvice(annotations = RestController.class)
 @Order(Ordered.HIGHEST_PRECEDENCE + 1)
-public abstract class ExceptionInfoHandler {
-    Logger LOG = LoggerFactory.getLogger(ExceptionInfoHandler.class);
+public class ExceptionInfoHandler {
+    static Logger LOG = LoggerFactory.getLogger(ExceptionInfoHandler.class);
 
     //  http://stackoverflow.com/a/22358422/548473
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
@@ -54,7 +54,7 @@ public abstract class ExceptionInfoHandler {
     @ResponseBody
     @Order(Ordered.HIGHEST_PRECEDENCE + 6)
     public ErrorInfo errorMethodArgumentNotValid(HttpServletRequest req, MethodArgumentNotValidException e) {
-        return logAndGetErrorInfo(req, e, false);
+        return logAndGetErrorInfo(req, new ValidationException(ValidationUtil.getErrorResponse(e.getBindingResult()).getBody()), false);
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -65,7 +65,7 @@ public abstract class ExceptionInfoHandler {
         return logAndGetErrorInfo(req, e, true);
     }
 
-    public ErrorInfo logAndGetErrorInfo(HttpServletRequest req, Exception e, boolean logException) {
+    public static ErrorInfo logAndGetErrorInfo(HttpServletRequest req, Exception e, boolean logException) {
         if (logException) {
             LOG.error("Exception at request " + req.getRequestURL(), e);
         } else {

@@ -1,9 +1,5 @@
 package ru.javawebinar.topjava.util;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.to.UserTo;
@@ -35,15 +31,5 @@ public class UserUtil {
         user.setPassword(PasswordUtil.encode(user.getPassword()));
         user.setEmail(user.getEmail().toLowerCase());
         return user;
-    }
-
-    public static boolean hasRole(Role role) {
-        // get security context from thread local
-        SecurityContext context = SecurityContextHolder.getContext();
-        if (context == null) return false;
-        Authentication authentication = context.getAuthentication();
-        if (authentication == null) return false;
-        for (GrantedAuthority auth : authentication.getAuthorities()) {if (role.toString().equals(auth.getAuthority())) return true;}
-        return false;
     }
 }
