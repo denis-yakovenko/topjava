@@ -11,9 +11,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import javax.validation.Valid;
 import java.util.List;
 
-/**
- * User: grigory.kislin
- */
 @RestController
 @RequestMapping("/ajax/admin/users")
 public class AdminAjaxController extends AbstractUserController {
